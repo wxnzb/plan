@@ -983,3 +983,166 @@
 // 	fmt.Println(a.string, a.int)
 // }
 
+//结构体相等性
+//结构体是值类型。如果它的每一个字段都是可比较的，则该结构体也是可比较的,map时不可以比较的
+
+// // 方法，这个和c++比较像
+// package main
+// import (
+// 	"fmt"
+// )
+// type Person struct {
+// 	f, l       string
+// 	age, month int
+// }
+
+// func (p Person) SayHi() {
+// 	fmt.Println("Hi, my name is", p.f, p.l)
+// }
+// func main() {
+// 	g := Person{
+// 		f:     "zhang",
+// 		l:     "san",
+// 		age:   18,
+// 		month: 1,
+// 	}
+// 	g.SayHi()
+// }
+
+// // 这个是只使用函数
+// package main
+// import (
+// 	"fmt"
+// )
+// type Person struct {
+// 	f, l       string
+// 	age, month int
+// }
+
+// func SayHi(p Person) {
+// 	fmt.Println("Hi, my name is", p.f, p.l)
+// }
+// func main() {
+// 	g := Person{
+// 		f:     "zhang",
+// 		l:     "san",
+// 		age:   18,
+// 		month: 1,
+// 	}
+// 	SayHi(g)
+// }
+
+// // 相同的名字的方法可以定义在不同的类型上，而相同名字的函数是不被允许的
+// package main
+// import (
+// 	"fmt"
+// 	"math"
+// )
+// type Rectangle struct {
+// 	length int
+// 	width  int
+// }
+// type Circle struct {
+// 	radius float64
+// }
+
+// func (r Rectangle) Area() int {
+// 	return r.length * r.width
+// }
+// func (c Circle) Area() float64 {
+// 	return math.Pi * c.radius * c.radius
+// }
+// func main() {
+// 	r := Rectangle{10, 20}
+// 	c := Circle{10}
+// 	fmt.Println(r.Area())
+// 	fmt.Println(c.Area())
+// }
+
+// // 指针接收器与值接收器
+// package main
+// import (
+// 	"fmt"
+// )
+// type Person struct {
+// 	f, l       string
+// 	age, month int
+// }
+// func (p Person) SayHi() {
+// 	p.f = "wang"
+// }
+// func (p *Person) SayHi2() { //好奇怪呀，他这个指针传进来也可以用.
+// 	p.f = "wang"
+// }
+// func main() {
+// 	p := Person{"zhang", "san", 18, 1}
+// 	p.SayHi()
+// 	fmt.Println(p.f)
+// 	//这两个效果一样
+// 	//p.SayHi2()
+// 	(&p).SayHi2()
+// 	fmt.Println(p.f)
+// }
+
+// // 我们通过使用 p.fullAddress() 来访问 address 结构体的 fullAddress() 方法。明确的调用 p.address.fullAddress() 是没有必要的
+// package main
+// import (
+// 	"fmt"
+// )
+// type Person struct {
+// 	f, l       string
+// 	age, month int
+// }
+// type Address struct {
+// 	city, state string
+// 	Person
+// }
+// func (a Person) fullAddress() {
+// 	fmt.Printf("Person: %s %s\n", a.f, a.l)
+// }
+// func main() {
+// 	a := Address{"Beijing", "China", Person{"zhang", "san", 18, 1}}
+// 	a.fullAddress()
+// }
+
+// package main
+// import(
+// 	"fmt"
+// )
+// type rectangle struct{
+// 	length int
+// 	width int
+// }
+// func (r rectangle) area() int{
+// 	return r.length*r.width
+// }
+// func area(r rectangle) int{
+// 	return r.length*r.width
+// }
+// func main(){
+// 	r := rectangle{10,20}
+// 	fmt.Println(r.area())
+// 	fmt.Println(area(r))
+// 	p:=&r
+// 	fmt.Println(p.area())
+// 	fmt.Println(area(*p))
+// 	//fmt.Println(area(p))这是错误的
+// }
+
+// 在非结构体类型上定义方法
+package main
+
+import (
+	"fmt"
+)
+
+type myInt int
+
+func (m myInt) add(i myInt) myInt {
+	return m + i
+}
+func main() {
+	m := myInt(10)
+	i := myInt(20)
+	fmt.Println(m.add(i))
+}
