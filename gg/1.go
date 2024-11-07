@@ -1129,20 +1129,181 @@
 // 	//fmt.Println(area(p))这是错误的
 // }
 
-// 在非结构体类型上定义方法
-package main
+// // 在非结构体类型上定义方法
+// package main
+// import (
+// 	"fmt"
+// )
+// type myInt int
 
-import (
-	"fmt"
-)
+// func (m myInt) add(i myInt) myInt {
+// 	return m + i
+// }
+// func main() {
+// 	m := myInt(10)
+// 	i := myInt(20)
+// 	fmt.Println(m.add(i))
+// }
 
-type myInt int
+// // 接口
+// package main
+// import (
+// 	"fmt"
+// )
+// type A interface {
+// 	B() []rune
+// }
+// type MyString string
 
-func (m myInt) add(i myInt) myInt {
-	return m + i
-}
-func main() {
-	m := myInt(10)
-	i := myInt(20)
-	fmt.Println(m.add(i))
-}
+// func (ms MyString) B() []rune {
+// 	var c []rune
+// 	for _, rune := range ms {
+// 		if rune == 'a' || rune == 'e' || rune == 'i' || rune == 'o' || rune == 'u' {
+// 			c = append(c, rune)
+// 		}
+// 	}
+// 	return c
+// }
+// func main() {
+// 	name := MyString("Sam Anderson")
+// 	// var v A
+// 	// v = name
+// 	// fmt.Printf("Vowels are %c", v.B())
+//     //这样也可以
+// 	fmt.Printf("Vowels are %c", name.B())
+// }
+
+//方法在切片中的使用
+// package main
+// import (
+// 	"fmt"
+// )
+// type A interface {
+// 	B() int
+// }
+// type Permanent struct {
+// 	empId    int
+// 	basicpay int
+// 	pf       int
+// }
+// type Contract struct {
+// 	empId    int
+// 	basicpay int
+// }
+// func (p Permanent) B() int {
+// 	return p.basicpay + p.pf
+// }
+// func (c Contract) B() int {
+// 	return c.basicpay
+// }
+// func totalExpense(s []A) {
+// 	expense := 0
+// 	for _, v := range s {
+// 		expense = expense + v.B()
+// 	}
+// 	fmt.Printf("Total Expense Per Month $%d", expense)
+// }
+// func main() {
+// 	p1 := Permanent{1, 5000, 500}
+// 	p2 := Permanent{2, 6000, 500}
+// 	p3 := Contract{2, 3000}
+// 	employees := []A{p1, p2, p3}
+// 	totalExpense(employees)
+// }
+
+// package main
+// import (
+// 	"fmt"
+// )
+// type A interface {
+// 	B()
+// }
+// type Myfloat float64
+
+// func (m Myfloat) B() {
+// 	fmt.Println(m)
+// }
+// func d(t A) {
+// 	fmt.Printf("Interface type %T value %v\n", t, t)
+// }
+// func main() {
+// 	var t A
+// 	f := Myfloat(88.8)
+// 	t = f
+// 	d(t)
+// 	t.B()
+// }
+
+// // 空接口
+// package main
+// import (
+// 	"fmt"
+// )
+// func d(i interface{}) {
+// 	fmt.Printf("Type=%T,value-%v\n", i, i)
+// }
+// func main() {
+// 	s := "hello word"
+// 	d(s)
+// 	i := 55
+// 	d(i)
+// 	start := struct {
+// 		name string
+// 	}{
+// 		name: "Naveen R",
+// 	}
+// 	d(start)
+// }
+
+// // 类型端砚
+// package main
+// import (
+// 	"fmt"
+// )
+// func a(i interface{}) {
+// 	s := i.(int)
+// 	fmt.Println(s)
+// }
+// func main() {
+// 	// var s interface{} = 56
+// 	// a(s)
+//     //这个不能转化，要解决问题，看下面
+// 	var h interface{} = "Wuxi"
+// 	a(h)
+// }
+
+//虽然我不知道这个有什么用？？
+// package main
+// import (
+// 	"fmt"
+// )
+// func a(i interface{}) {
+// 	v, ok := i.(int)
+// 	fmt.Println(v, ok)
+// }
+// func main() {
+// 	var h interface{} = "Wuxi"
+// 	a(h)
+// }
+
+// // 类型选择
+// package main
+// import (
+// 	"fmt"
+// )
+// func A(i interface{}) {
+// 	switch i.(type) {
+// 	case string:
+// 		fmt.Printf("i am a string and my value is %s\n", i.(string))
+// 	case int:
+// 		fmt.Printf("i am an int and value is %d\n", i.(int))
+// 	default:
+// 		fmt.Printf("unknown type\n")
+// 	}
+// }
+// func main() {
+// 	A("wuxi")
+// 	A(11)
+// 	A(11.11)
+// }
+
