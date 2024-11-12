@@ -1307,3 +1307,168 @@
 // 	A(11.11)
 // }
 
+// 前面的不想看了，还真是天生反骨，呵呵
+// go携程
+// package main
+// import (
+// 	"fmt"
+// 	"time"
+// )
+// func hello() {
+// 	fmt.Println("Hello world goroutine")
+// }
+// func main() {
+// 	go hello()
+// 	time.Sleep(1 * time.Second)
+// 	fmt.Println("main goroutine")
+// }
+
+// package main
+// import (
+// 	"fmt"
+// 	"time"
+// )
+// func numbers() {
+// 	for i := 1; i <= 5; i++ {
+// 		time.Sleep(250 * time.Millisecond)
+// 		fmt.Printf("numbers %d\n", i)
+// 	}
+// }
+// func alphabets() {
+// 	for i := 'a'; i <= 'e'; i++ {
+// 		time.Sleep(400 * time.Millisecond)
+// 		fmt.Printf("alphabets %c\n", i)
+// 	}
+// }
+// func main() {
+// 	go numbers()
+// 	go alphabets()
+// 	time.Sleep(3000 * time.Millisecond)
+// 	fmt.Println("main terminated")
+// }
+
+// 信道
+// package main
+// import "fmt"
+// func main() {
+// //我对这里十分好奇，他为什么用了make后就不是nil了,真奇怪
+// 	var a chan int
+// 	if a == nil {
+// 		fmt.Println("chan a is nil, going to make one")
+// 		a = make(chan int)
+// 		fmt.Printf("Type of a is %T\n", a)
+// 	}
+// }
+
+// //通过信道发送和接收值
+// //现在不用时间进行等待了，原因是信道会阻塞，输入进去的消息必须被读取才能ok
+// package main
+// import(
+//     "fmt"
+// )
+// func hello(done chan bool){
+//     fmt.Println("Hello world goroutine")
+//     done<-true
+// }
+// func main(){
+//     done:=make(chan bool)
+//     go hello(done)
+//     <-done
+//     fmt.Println("main terminated")
+// }
+
+// package main
+// import (
+// 	"fmt"
+// )
+// func calcSquares(number int, squareop chan int) {
+// 	sum := 0
+// 	for number != 0 {
+// 		digit := number % 10
+// 		sum += digit * digit
+// 		number /= 10
+// 	}
+// 	squareop <- sum
+// }
+// func calcCubes(number int, cubeop chan int) {
+// 	sum := 0
+// 	for number != 0 {
+// 		digit := number % 10
+// 		sum += digit * digit * digit
+// 		number /= 10
+// 	}
+// 	cubeop <- sum
+// }
+// func main() {
+// 	number := 589
+// 	sqrch := make(chan int)
+// 	cubech := make(chan int)
+// 	go calcSquares(number, sqrch)
+// 	go calcCubes(number, cubech)
+// 	squares, cubes := <-sqrch, <-cubech
+// 	fmt.Println("Final output", squares+cubes)
+// }
+
+// // 死锁,没有人来读取他，所以他一直处于等待状态
+// package main
+// func main() {
+// 	ch := make(chan int)
+// 	ch <- 2
+// }
+
+// // 单向信道
+// package main
+// import (
+// 	"fmt"
+// )
+// func sendData(sendch chan<- int) {
+// 	sendch <- 10
+// }
+// func main() {
+// 	receivech := make(chan int)
+// 	go sendData(receivech)
+// 	fmt.Println(<-receivech)
+// }
+
+// // 使用for range便利信道
+// package main
+// import (
+// 	"fmt"
+// )
+// func producer(chnl chan int) {
+// 	for i := 0; i < 10; i++ {
+// 		chnl <- i
+// 	}
+// 	close(chnl)
+// }
+// func main() {
+// 	ch := make(chan int)
+// 	go producer(ch)
+// 	for {
+// 		v, ok := <-ch
+// 		if ok == false {
+// 			break
+// 		}
+// 		fmt.Println("Received ", v, ok)
+// 	}
+// }
+
+// package main
+// import (
+// 	"fmt"
+// )
+// func producer(chnl chan int) {
+// 	for i := 0; i < 10; i++ {
+// 		chnl <- i
+// 	}
+// 	close(chnl)
+// }
+// func main() {
+// 	ch := make(chan int)
+// 	go producer(ch)
+// 	for v := range ch {
+// 		fmt.Println("receive", v)
+// 	}
+// }
+
+
